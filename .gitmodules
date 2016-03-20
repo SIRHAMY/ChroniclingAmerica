@@ -1,0 +1,6 @@
+[submodule "chroniclingamerica.py"]
+	path = chroniclingamerica.py
+	url = git@github.com:SIRHAMY/chroniclingamerica.py.git
+[submodule "ChroniclingAmericaAPIWrapper"]
+	path = ChroniclingAmericaAPIWrapper
+	url = git@github.com:SIRHAMY/ChroniclingAmericaAPIWrapper.git
