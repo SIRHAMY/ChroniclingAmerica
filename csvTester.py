@@ -53,6 +53,10 @@ class CSVFetcher():
 
 if __name__ == "__main__":
 
+    import timeit
+    timeStart = timeit.default_timer()
+    print("Operation started at: " + repr(timeStart))
+
     c1 = NaiveBayesClassifier(train)
 
     parser = argparse.ArgumentParser(
@@ -65,14 +69,14 @@ if __name__ == "__main__":
     args.filename = unicode(args.filename)
     fetcher = CSVFetcher(args.filename)
 
-    myPos = 0
-    myNeg = 0
+    totalPos = 0
+    totalNeg = 0
     for story in fetcher.fetch():
         #print(count)
         x = c1.classify(story[3].decode('utf-8'))
 
         if (x == 'pos'):
-            myPos +=1
+            totalPos +=1
             if(story[0] not in classificationResults):
                 classificationResults[story[0]] = {'pos': 1}
             elif( 'pos' not in classificationResults[story[0]]):
@@ -80,7 +84,7 @@ if __name__ == "__main__":
             else:
                 classificationResults[story[0]]['pos'] += 1
         else:
-            myNeg += 1
+            totalNeg += 1
             if(story[0] not in classificationResults):
                 classificationResults[story[0]] = {'neg': 1}
             elif( 'neg' not in classificationResults[story[0]] ):
@@ -89,15 +93,19 @@ if __name__ == "__main__":
                 classificationResults[story[0]]['neg'] += 1
         print(x)
     print('positive: ')
-    print(myPos)
+    print(totalPos)
     print('negative: ')
-    print(myNeg)
+    print(totalNeg)
+
+    print("Outputting results...")
 
     if(args.write):
         outFile = open(args.write + '.csv', 'wb')
         outCSVWriter = csv.writer(outFile)
+        cols = ["year", "pos", "neg"]
+        outCSVWriter.writerow(cols)
 
-    for x in range(1836, 1922):
+    for x in range(1836, 1922 + 1):
 
         if(args.write is None):
             if(str(x) in classificationResults):
@@ -118,4 +126,10 @@ if __name__ == "__main__":
                 negative = classificationResults[str(x)]['neg'] if ('neg' in classificationResults[str(x)]) else 0
                 entry = [year, positive, negative]
                 outCSVWriter.writerow(entry)
+
+    print("Operation complete...")
+    #stats
+    timeEnd = timeit.default_timer()
+    print("Elapsed Time: " + repr(timeEnd - timeStart) + "s")
+    print("Files classified: " + str(totalPos + totalNeg))
 
