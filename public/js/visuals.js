@@ -55,26 +55,6 @@ d3.csv("./resources/housewifeRes1000.csv", function(error, data) {
 
   Plotly.newPlot('Frequency', myGraph1, layout1);
 
-  var trace1 = {
-  x: ['giraffes', 'orangutans', 'monkeys'],
-  y: [20, 14, 23],
-  name: 'SF Zoo',
-  type: 'bar'
-};
-
-var trace2 = {
-  x: ['giraffes', 'orangutans', 'monkeys'],
-  y: [12, 18, 29],
-  name: 'LA Zoo',
-  type: 'bar'
-};
-
-var data = [trace1, trace2];
-
-var layout = {barmode: 'stack'};
-
-Plotly.newPlot('Test', data, layout);
-
   //**Percentage Bar Chart**
   var graphX2 = [];
   var graphY2 = [];
