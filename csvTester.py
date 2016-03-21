@@ -32,6 +32,8 @@ train = [
 
 c1 = NaiveBayesClassifier(train)
 
+classificationResults = {}
+
 with open('housewife1000.csv', 'rb') as f:
     reader = csv.reader(f, delimiter=',')
     myList = list(reader)
@@ -40,12 +42,37 @@ myNeg = 0
 for story in myList:
     #print(count)
     x = c1.classify(story[3].decode('utf-8'))
+
     if (x == 'pos'):
         myPos +=1
+        if(story[0] not in classificationResults or 
+            'pos' not in classificationResults[story[0]]):
+            classificationResults[story[0]] = {'pos': 1}
+        else:
+            classificationResults[story[0]]['pos'] += 1
     else:
         myNeg += 1
+        if(story[0] not in classificationResults or 
+            'neg' not in classificationResults[story[0]]):
+            classificationResults[story[0]] = {'neg': 1}
+        else:
+            classificationResults[story[0]]['neg'] += 1
     print(x)
 print('positive: ')
 print(myPos)
 print('negative: ')
 print(myNeg)
+
+for x in range(1836, 1922):
+    if(str(x) in classificationResults):
+        print("Year: " + str(x))
+        if('pos' in classificationResults[str(x)]):
+            print("Positive: " + str(classificationResults[str(x)]['pos']))
+        else:
+            print("Positive: 0" )
+        
+        if('neg' in classificationResults[str(x)]):
+            print("Negative: " + str(classificationResults[str(x)]['neg']))
+        else:
+            print("Negative: 0")
+
